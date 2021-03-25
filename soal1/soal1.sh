@@ -1,10 +1,15 @@
 #!/bin/bash
 
+regex='(ERROR|INFO)(.*)' # Mengumpulkan informasi dari log aplikasi yang terdapat pada file syslog.log
+regex2='(?<=ERROR )(.*)(?= )' # Mendapatkan log msg
+
 # 1.A
-grep -oP '(ERROR|INFO)(.*)' syslog.log | sort
-# Menggunakan sort agar lebih gampang membaca informasi log
+# grep -oP '$regex' syslog.log
 
 # 1.B
+
+# echo "Error, Count" > error_message.csv
+# grep -oP "$regex2" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' >> error_message.csv
 
 # 1.C
 
