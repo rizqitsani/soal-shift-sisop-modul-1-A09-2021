@@ -13,5 +13,10 @@ grep -oP "$regex2" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\
 
 
 # 1. C & F
-# grep "INFO" syslog.log | grep -oP "(?<=\().+?(?=\))" | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' | sort #nama dan jumlah "INFO"
-# grep "ERROR" syslog.log | grep -oP "(?<=\().+?(?=\))" | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' | sort #nama dan jumlah "ERROR"
+# echo "Error, Count" > error_message.csv
+
+# listerror="grep 'ERROR' syslog.log | grep -oP '(?<=\().+?(?=\))' | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1,/' | sort"
+# listinfo="grep 'INFO' syslog.log | grep -oP '(?<=\().+?(?=\))' | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' | sort | grep -oP '\\d+'" 
+# eksekusi="paste <(${listerror}) <(${listinfo}) >> error_message.csv"
+
+# eval "$eksekusi"
