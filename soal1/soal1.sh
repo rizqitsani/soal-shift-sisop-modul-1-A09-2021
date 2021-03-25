@@ -1,27 +1,13 @@
 #!/bin/bash
 
-total=0
-echo "Error,Count"
+# 1.A
+grep -oP '(ERROR|INFO)(.*)' syslog.log | sort
+# Menggunakan sort agar lebih gampang membaca informasi log
 
-if [[ $(cat syslog.log) =~ 'The ticket was modified while updating' ]]; then
-	echo "The ticket was modified while updating, ${total}"
-fi
+# 1.B
 
-if [[ $(cat syslog.log) =~ 'Permission denied while closing ticket' ]]; then
-	echo "Permission denied while closing ticket, ${total}"
-fi
+# 1.C
 
-if [[ $(cat syslog.log) =~ 'Tried to add information to closed ticket' ]]; then
-	echo "Tried to add information to closed ticket, ${total}"
-fi
+# 1.D
 
-if [[ $(cat syslog.log) =~ "Ticket doesn't exist" ]]; then
-	echo "Ticket doesn't exist, ${total}"
-fi
-
-if [[ $(cat syslog.log) =~ "Connection to DB failed" ]]; then
-	echo "Connection to DB failed, ${total}"
-fi
-
-# Masih banyak yang belum selesai tapi kurang lebih mungkin begini
-# Kurang count tiap error log, sorting, dan outputnya ke csv
+# 1.E
