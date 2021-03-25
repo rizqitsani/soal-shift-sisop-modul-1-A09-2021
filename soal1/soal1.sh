@@ -1,18 +1,15 @@
 #!/bin/bash
 
-regex='(ERROR|INFO)(.*)' # Mengumpulkan informasi dari log aplikasi yang terdapat pada file syslog.log
-regex2='(?<=ERROR )(.*)(?= )' # Mendapatkan log msg
+regex2='(?<=ERROR )(.*)(?= )' # Regular Expression untuk mendapatkan log msg
 
-# 1.A
-# grep -oP '$regex' syslog.log
+# 1.B & D
 
-# 1.B
+echo "Error, Count" > error_message.csv
+grep -oP "$regex2" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' >> error_message.csv
+# 'grep -oP "$regex2" syslog.log' untuk menampilkan semua pesan log
+# 'sort | uniq -c' disort kemudian dihitung perline untuk mendapatkan jumlah kemunculan tiap error
+# 'sort -nr' Mensorting number kemudian di reverse karena butuh yang terbanyak ditaruh diatas
+# sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' untuk menswap nomor yang awalnya berada didepan string menjadi dibelakang string dan diberi koma
 
-# echo "Error, Count" > error_message.csv
-# grep -oP "$regex2" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' >> error_message.csv
 
-# 1.C
-
-# 1.D
-
-# 1.E
+# 1. C & F
