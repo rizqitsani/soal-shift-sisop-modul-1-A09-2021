@@ -1,23 +1,19 @@
 #!/bin/bash
 
-regex2='(?<=ERROR )(.*)(?= )' # Regular Expression untuk mendapatkan log msg
+regex='(?<=ERROR )(.*)(?= )' # Regular expression untuk mendapatkan log msg
+regex2='(?<=\().+?(?=\))' # Regular expression untuk mendapatkan username didalam ( )
 
 # 1.B & D
 
 echo "Error, Count" > error_message.csv
-grep -oP "$regex2" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' >> error_message.csv
-# 'grep -oP "$regex2" syslog.log' untuk menampilkan semua pesan log
-# 'sort | uniq -c' disort kemudian dihitung perline untuk mendapatkan jumlah kemunculan tiap error
-# 'sort -nr' Mensorting number kemudian di reverse karena butuh yang terbanyak ditaruh diatas
-# sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' untuk menswap nomor yang awalnya berada didepan string menjadi dibelakang string dan diberi koma
-
+grep -oP "$regex" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' >> error_message.csv
 
 # 1. C & F
 
 echo "Username,INFO,ERROR" > user_statistic.csv
-
-listerror="grep 'ERROR' syslog.log | grep -oP '(?<=\().+?(?=\))' | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1,/' | sort"
-listinfo="grep 'INFO' syslog.log | grep -oP '(?<=\().+?(?=\))' | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' | sort | grep -oP '\\d+'" 
-eksekusi="paste <(${listerror}) <(${listinfo}) >> user_statistic.csv"
-
-eval "$eksekusi"
+grep -oP "$regex2" syslog.log | sort | uniq | while read i 
+do
+	echo "$i" | tr '\n' ','
+	grep "$i" syslog.log | grep "INFO" | wc -l | tr '\n' ','
+	grep "$i" syslog.log | grep "ERROR" | wc -l 
+done >> user_statistic.csv
