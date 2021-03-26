@@ -1,18 +1,17 @@
 #!/bin/bash
 
 # 1. A
-regex='(ERROR |INFO)(.*)'
-regex2='(?<=ERROR )(.*)(?= )'
-regex3='(?<=\().+?(?=\))'
+regex='(?<=ERROR )(.*)(?= )'
+regex2='(?<=\().+?(?=\))'
 
 # 1. B
 error_message() {
-	grep -oP "$regex2" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' >> error_message.csv
+	grep -oP "$regex" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' >> error_message.csv
 }
 
 # 1. C
 user_statistic() {
-	grep -oP "$regex3" syslog.log | sort | uniq | while read i 
+	grep -oP "$regex2" syslog.log | sort | uniq | while read i 
 	do
 		echo "$i" | tr '\n' ','
 		grep "$i" syslog.log | grep "INFO" | wc -l | tr '\n' ','
