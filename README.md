@@ -87,6 +87,20 @@ user_statistic
 ```
 Pertama print "Username,INFO,ERROR" untuk menjadi header dari user_statistic.csv kemudian memanggil fungsi user_statistic
 
+### Problem yang dialami:
+* Belum terbiasa dengan syntax bash yang sedikit berbeda dengan bahasa pemrograman yang telah diajarkan di semester-semester lalu sehingga saat melakukan programming sedikit terhambat dikarenakan harus searching terlebih dahulu
+* Dari soal tersebut disuruh untuk membuat regex sedangkan kami tidak memiliki ilmu apapun mengenai regex atau yang biasa disebut dengan regular expression, oleh karena itu saat mengerjakan soal nomer 1 harus mencari-cari di google dan mengetest regex tersebut di [RegExr](https://regexr.com/) agar bisa sesuai dengan output yang diminta
+* Untuk soal 1.B saya menggunakan sed untuk menswap angka yang berada di depan menjadi di belakang dengan diberi koma. Untuk sed sendiri saya juga masih minim ilmu untuk menggunakan itu dan harus juga untuk membuat dan mengetest [disini](https://sed.js.org/index.html) agar sesuai dengan output yang diminta
+* Kemudian untuk soal yang 1C, hampir saja codingan yang saya buat mendekati output yang diinginkan. Kurang lebih hasil codingnya seperti ini
+```bash
+listerror="grep 'ERROR' syslog.log | grep -oP '(?<=\().+?(?=\))' | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1,/' | sort"
+listinfo="grep 'INFO' syslog.log | grep -oP '(?<=\().+?(?=\))' | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' | sort | grep -oP '\\d+'" 
+eksekusi="paste <(${listerror}) <(${listinfo}) >> user_statistic.csv"
+
+eval "$eksekusi"
+```
+Namun ketika ada user yang tidak ada log INFO / ERROR, maka outputnya adalah null / kosong sedangkan yang diminta jika tidak terdapat log ditulis 0, karena tidak sesuai output saya harus bersusah payah lagi membuat codingan baru agar sesuai output
+
 ## Nomer 2
 
 ## Nomer 3
