@@ -1,12 +1,9 @@
 #!/bin/bash
 
-regex='(ERROR |INFO)(.*)'
-regex2='(?<=ERROR )(.*)(?= )' # Regular expression untuk mendapatkan log msg
-regex3='(?<=\().+?(?=\))' # Regular expression untuk mendapatkan username didalam ( )
-
 # 1. A
-# grep -oP "(ERROR |INFO)(.*)" syslog.log
-
+regex='(ERROR |INFO)(.*)'
+regex2='(?<=ERROR )(.*)(?= )'
+regex3='(?<=\().+?(?=\))'
 
 # 1. B
 error_message() {
