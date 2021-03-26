@@ -1,7 +1,7 @@
 # soal-shift-sisop-modul-1-A09-2021
 
 ## Nomer 1
-Source code : [Click here!](https://github.com/rizqitsani/soal-shift-sisop-modul-1-A09-2021/blob/main/soal1/soal1.sh)
+Source code : [Click here!](https://github.com/rizqitsani/soal-shift-sisop-modul-1-A09-2021/blob/main/soal1/)
 
 **Deskripsi soal:**
 
@@ -14,12 +14,10 @@ Mengumpulkan informasi dari log aplikasi yang terdapat pada file syslog.log. Inf
 
 **Pembahasan:**
 ```bash
-regex='(ERROR |INFO)(.*)'
-regex2='(?<=ERROR )(.*)(?= )'
-regex3='(?<=\().+?(?=\))' 
+regex='(?<=ERROR )(.*)(?= )'
+regex2='(?<=\().+?(?=\))' 
 ```
-* Untuk regular expression yang pertama untuk mendapatkan jenis log (ERROR/INFO), pesan log, dan username pada setiap baris lognya
-* Untuk regular expression yang kedua untuk mendapatkan pesan log yang ada di syslog.log
+* Untuk regular expression yang kedua untuk mendapatkan pesan log yang ada di syslog.log, khususnya yang bertipe "ERROR"
 * Untuk regular expression untuk mendapatkan username didalam ( )
 
 ### 1.B
@@ -29,14 +27,16 @@ Kemudian, Ryujin harus menampilkan semua pesan error yang muncul beserta jumlah 
 **Pembahasan:**
 ```bash
 error_message() {
-	grep -oP "$regex2" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' >> error_message.csv
+	grep -oP "$regex" syslog.log | sort | uniq -c | sort -nr | sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/' >> error_message.csv
 }
 ```
 Membuat fungsi bernama error_message() yang detailnya sebagai berikut
-* *grep -oP "$regex2" syslog.log*, untuk menampilkan semua pesan log
-* *sort | uniq -c*, disort kemudian dihitung perline untuk mendapatkan jumlah kemunculan tiap error
-* *sort -nr*, Mensorting number kemudian di reverse karena butuh yang terbanyak ditaruh diatas
-* *sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/'*, untuk menswap nomor yang awalnya berada didepan string menjadi dibelakang string dan diberi koma
+* `grep -oP "$regex" syslog.log` Untuk menampilkan semua pesan log
+* `sort` Kemudian disort kemudian dihitung perline untuk mendapatkan jumlah kemunculan tiap error
+* `uniq -c` Hitung perline untuk mendapatkan jumlah kemunculan tiap error
+* `sort -nr` Mensorting number kemudian di reverse karena butuh yang terbanyak ditaruh diatas
+* `sed 's/^  *\([0-9]*\) *\(.*\)/\2,\1/'` Menswap nomor yang awalnya berada didepan string menjadi dibelakang string dan diberi koma
+
 Kemudian outputnya akan dimasukkan ke file error_message.csv
 
 ### 1.C
@@ -46,7 +46,7 @@ Ryujin juga harus dapat menampilkan jumlah kemunculan log ERROR dan INFO untuk s
 **Pembahasan:**
 ```bash
 user_statistic() {
-  grep -oP "$regex3" syslog.log | sort | uniq | while read i 
+  grep -oP "$regex2" syslog.log | sort | uniq | while read i 
   do
         echo "$i" | tr '\n' ','
         grep "$i" syslog.log | grep "INFO" | wc -l | tr '\n' ','
@@ -55,13 +55,14 @@ user_statistic() {
 }
 ```
 Membuat fungsi bernama user_statistic() yang detailnya sebagai berikut
-* *grep -oP "$regex3" syslog.log*, untuk mendapatkan username didalam ( )
-* *sort | uniq*, disort kemudian dihilangkan username yang terdapat duplikate
+* `grep -oP "$regex2" syslog.log` untuk mendapatkan username didalam ( )
+* `sort` dari username yang sudah di grep kemudian disorting
+* `uniq` kemudian dihilangkan username yang terdapat duplikat
 
 Kemudian di looping untuk menampilkan username, jumlah "INFO", jumlah "ERROR"
-* Untuk *echo "$i" | tr '\n' ','* , Untuk menampilkan username kemudian untuk newline diganti menjadi koma
-* *grep "$i" syslog.log | grep "INFO" | wc -l | tr '\n' ','* , Untuk menampilkan jumlah "INFO" tiap user
-* *grep "$i" syslog.log | grep "INFO" | wc -l* , Untuk menampilkan jumlah "ERROR" tiap user
+* `echo "$i" | tr '\n' ','` Untuk menampilkan username kemudian untuk newline diganti menjadi koma
+* `grep "$i" syslog.log | grep "INFO" | wc -l | tr '\n' ','` Untuk menampilkan jumlah "INFO" tiap user, dengan mengambil baris yang mengandung kata-kata "INFO" dan kemudian di hitung berapa banyak baris menggunakan `wc -l` dan newlinenya `\n` di ganti menjadi koma menggunakan command `tr '\n' ','`
+* `grep "$i" syslog.log | grep "INFO" | wc -l` , Untuk menampilkan jumlah "ERROR" tiap user, dengan mengambil baris yang mengandung kata-kata "ERROR" dan kemudian di hitung berapa banyak baris menggunakan `wc -l` dan newlinenya `\n` di ganti menjadi koma menggunakan command `tr '\n' ','`
 
 Kemudian outputnya akan dimasukkan ke file user_statistic.csv
 
@@ -71,10 +72,10 @@ Semua informasi yang didapatkan pada poin b dituliskan ke dalam file error_messa
 
 **Pembahasan:**
 ```bash
-echo "Error, Count" > error_message.csv
+echo "Error,Count" > error_message.csv
 error_message
 ```
-Pertama print "Error, Count" untuk menjadi header dari error_message.csv kemudian memanggil fungsi error_message
+Pertama print "Error,Count" untuk menjadi header dari error_message.csv kemudian memanggil fungsi error_message()
 
 ### 1.E
 **Deskripsi:**
@@ -85,7 +86,7 @@ Semua informasi yang didapatkan pada poin c dituliskan ke dalam file user_statis
 echo "Username,INFO,ERROR" > user_statistic.csv
 user_statistic
 ```
-Pertama print "Username,INFO,ERROR" untuk menjadi header dari user_statistic.csv kemudian memanggil fungsi user_statistic
+Pertama print "Username,INFO,ERROR" untuk menjadi header dari user_statistic.csv kemudian memanggil fungsi user_statistic()
 
 ### Problem yang dialami:
 * Belum terbiasa dengan syntax bash yang sedikit berbeda dengan bahasa pemrograman yang telah diajarkan di semester-semester lalu sehingga saat melakukan programming sedikit terhambat dikarenakan harus searching terlebih dahulu
