@@ -1,1 +1,1 @@
-0 7-12 * * 1-5 
+0 7-12 * * 1-5 bash ~/soal3d.sh && unzip Koleksi.zip && rm Koleksi.zip
