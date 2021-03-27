@@ -20,7 +20,7 @@ user_statistic() {
 }
 
 # 1. D
-echo "Error, Count" > error_message.csv
+echo "Error,Count" > error_message.csv
 error_message
 
 # 1. F
