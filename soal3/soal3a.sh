@@ -5,7 +5,7 @@ do
   wget -a Foto.log -nv https://loremflickr.com/320/240/kitten
 done
 
-md5sum * | sort | awk '
+find . -type f -exec md5sum {} \; | sort | awk '
   BEGIN{lastHash = ""}
   {
     if($1 == last_hash) {
@@ -16,11 +16,13 @@ md5sum * | sort | awk '
 ' | xargs rm
 
 order=1
-for file in *
+for pathname in $( find . -type f -name "kitten*" );
 do
-  if [[ $file == *"kitten"* ]]
+  if [ $order -lt 10 ]
   then
-    mv $file `printf "Koleksi_%02d" $order`
-    let order=$order+1
+    mv $pathname "Koleksi_0$order"
+  else
+    mv $pathname "Koleksi_$order"
   fi
+  let order=$order+1
 done
