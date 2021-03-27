@@ -21,7 +21,7 @@ do
 done
 
 find . -type f -exec md5sum {} \; | sort | awk '
-  BEGIN{lastHash = ""}
+  BEGIN{last_hash = ""}
   {
     if($1 == last_hash) {
       print $2
