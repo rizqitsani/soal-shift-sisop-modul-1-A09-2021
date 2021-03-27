@@ -8,10 +8,6 @@ Source code : [Click here!](https://github.com/rizqitsani/soal-shift-sisop-modul
 Ryujin baru saja diterima sebagai IT support di perusahaan Bukapedia. Dia diberikan tugas untuk membuat laporan harian untuk aplikasi internal perusahaan, ticky. Terdapat 2 laporan yang harus dia buat, yaitu laporan **daftar peringkat pesan error** terbanyak yang dibuat oleh ticky dan laporan **penggunaan user** pada aplikasi ticky. Untuk membuat laporan tersebut, Ryujin harus melakukan beberapa hal berikut:
 
 ### 1.A
-**Deskripsi:**
-
-Mengumpulkan informasi dari log aplikasi yang terdapat pada file syslog.log. Informasi yang diperlukan antara lain: jenis log (ERROR/INFO), pesan log, dan username pada setiap baris lognya. Karena Ryujin merasa kesulitan jika harus memeriksa satu per satu baris secara manual, dia menggunakan regex untuk mempermudah pekerjaannya. Bantulah Ryujin membuat regex tersebut.
-
 **Pembahasan:**
 ```bash
 regex='(?<=ERROR )(.*)(?= )'
@@ -21,9 +17,6 @@ regex2='(?<=\().+?(?=\))'
 * Untuk regular expression untuk mendapatkan username didalam ( )
 
 ### 1.B
-**Deskripsi:**
-Kemudian, Ryujin harus menampilkan semua pesan error yang muncul beserta jumlah kemunculannya.
-
 **Pembahasan:**
 ```bash
 error_message() {
@@ -40,9 +33,6 @@ Membuat fungsi bernama error_message() yang detailnya sebagai berikut
 Kemudian outputnya akan dimasukkan ke file error_message.csv
 
 ### 1.C
-**Deskripsi:**
-Ryujin juga harus dapat menampilkan jumlah kemunculan log ERROR dan INFO untuk setiap user-nya.
-
 **Pembahasan:**
 ```bash
 user_statistic() {
@@ -67,9 +57,6 @@ Kemudian di looping untuk menampilkan username, jumlah "INFO", jumlah "ERROR"
 Kemudian outputnya akan dimasukkan ke file user_statistic.csv
 
 ### 1.D
-**Deskripsi:**
-Semua informasi yang didapatkan pada poin b dituliskan ke dalam file error_message.csv dengan header Error,Count yang kemudian diikuti oleh daftar pesan error dan jumlah kemunculannya diurutkan berdasarkan jumlah kemunculan pesan error dari yang terbanyak.
-
 **Pembahasan:**
 ```bash
 echo "Error,Count" > error_message.csv
@@ -78,9 +65,6 @@ error_message
 Pertama print "Error,Count" untuk menjadi header dari error_message.csv kemudian memanggil fungsi error_message()
 
 ### 1.E
-**Deskripsi:**
-Semua informasi yang didapatkan pada poin c dituliskan ke dalam file user_statistic.csv dengan header Username,INFO,ERROR diurutkan berdasarkan username secara ascending.
-
 **Pembahasan:**
 ```bash
 echo "Username,INFO,ERROR" > user_statistic.csv
@@ -103,5 +87,60 @@ eval "$eksekusi"
 Namun ketika ada user yang tidak ada log INFO / ERROR, maka outputnya adalah null / kosong sedangkan yang diminta jika tidak terdapat log ditulis 0, karena tidak sesuai output saya harus bersusah payah lagi membuat codingan baru agar sesuai output
 
 ## Nomer 2
+Source code : [Click here!](https://github.com/rizqitsani/soal-shift-sisop-modul-1-A09-2021/blob/main/soal2/)
+
+**Deskripsi soal:**
+
+Steven dan Manis mendirikan sebuah *startup* bernama “TokoShiSop”. Sedangkan kamu dan Clemong adalah karyawan pertama dari TokoShiSop. Setelah tiga tahun bekerja, Clemong diangkat menjadi manajer penjualan TokoShiSop, sedangkan kamu menjadi kepala gudang yang mengatur keluar masuknya barang.
+
+Tiap tahunnya, TokoShiSop mengadakan Rapat Kerja yang membahas bagaimana hasil penjualan dan strategi kedepannya yang akan diterapkan. Kamu sudah sangat menyiapkan sangat matang untuk raker tahun ini. Tetapi tiba-tiba, Steven, Manis, dan Clemong meminta kamu untuk mencari beberapa kesimpulan dari data penjualan *“Laporan-TokoShiSop.tsv”*.
+
+### 2.A
+**Pembahasan:**
+
+### 2.B
+**Pembahasan:**
+
+### 2.C
+**Pembahasan:**
+
+### 2.D
+**Pembahasan:**
+
+### Problem yang dialami:
 
 ## Nomer 3
+Source code : [Click here!](https://github.com/rizqitsani/soal-shift-sisop-modul-1-A09-2021/blob/main/soal3/)
+
+**Deskripsi soal:**
+
+Kuuhaku adalah orang yang sangat suka mengoleksi foto-foto digital, namun Kuuhaku juga merupakan seorang yang pemalas sehingga ia tidak ingin repot-repot mencari foto, selain itu ia juga seorang pemalu, sehingga ia tidak ingin ada orang yang melihat koleksinya tersebut, sayangnya ia memiliki teman bernama Steven yang memiliki rasa kepo yang luar biasa. Kuuhaku pun memiliki ide agar Steven tidak bisa melihat koleksinya, serta untuk mempermudah hidupnya, yaitu dengan meminta bantuan kalian. Idenya adalah :
+
+### 3.A
+**Pembahasan:**
+
+### 3.B
+**Pembahasan:**
+```
+0 20 1-31/7,2-31/4 * * bash ~/soal3b.sh
+```
+Crontab yang memungkinkan untuk menjalankan file `soal3b.sh` saat jam 8 malam dari tanggal 1 (7 hari sekali) dan dari tanggal 2 (4 hari sekali)
+
+### 3.C
+**Pembahasan:**
+
+### 3.D
+**Pembahasan:**
+
+### 3.E
+**Pembahasan:**
+```
+0 7 * * 1-5 bash ~/soal3d.sh
+0 18 * * 1-5 unzip Koleksi.zip && rm Koleksi.zip
+```
+Terdapat 2 crontab
+* Yang pertama yaitu menjalankan file bash setiap jam 7 pagi, didalam file bash tersebut terdapat perintah untuk menzip file
+* Yang kedua yaitu untuk menunzip file bernama `Koleksi.zip` dan setelah di unzip kemudian dihapus dengan perintah `rm`
+
+### Problem yang dialami:
+* Saat membuat crontab, belum terbiasa dengan membuat crontab khususnya untuk nomor 3B. Saat pertama membuat crontab nomor 3B saya menggunakan `0 20 1/7,2/4 * *` awalnya namun terdapat warning yang saya cek di website [Crontab.guru](https://crontab.guru/#0_20_1/7,2/4_*_*) dan setelah searching cukup lama dan ternyata lebih baik jika diberi interval harinya dari yang awalnya `1/7,2/4` menjadi `1-31/7,2-31/4`
