@@ -1,0 +1,1 @@
+zip -q -r -m -P $(date "+%m%d%Y") Koleksi.zip Kucing_* Kelinci_*
