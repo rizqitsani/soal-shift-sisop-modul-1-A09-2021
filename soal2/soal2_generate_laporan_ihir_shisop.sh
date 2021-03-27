@@ -70,4 +70,4 @@ END{
             region=i
         }
     }
-print "Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah", region, "dengan total keuntungan", profit)}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
+print "Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah", region, "dengan total keuntungan", profit}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
