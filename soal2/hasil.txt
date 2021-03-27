@@ -6,6 +6,8 @@ Susan Vittorini
 Benjamin Farhat
 Michelle Lonsdale
 
-Tipe segmen customer yang penjualannya paling sedikit adalah Consumer dengan 5191 transaksi
 
-Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah East dengan total keuntungan 91522.8
+Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan 1783 transaksi
+
+Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah Central dengan total keuntungan 39706.4
+
