@@ -31,7 +31,7 @@ find . -type f -exec md5sum {} \; | sort | awk '
 ' | xargs rm
 
 order=1
-for pathname in $( find . -type f -name "kitten*" );
+for pathname in $( find . -type f -name "$item*" );
 do
   if [ $order -lt 10 ]
   then
