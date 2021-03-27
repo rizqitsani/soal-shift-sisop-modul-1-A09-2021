@@ -1,2 +1,2 @@
-0 7 * * 1-5 bash ~/soal3d.sh
-0 18 * * 1-5 unzip Koleksi.zip && rm Koleksi.zip
+0 7 * * 1-5 cd /home/daffainfo/soal-shift-sisop-modul-1-A09-2021 && bash ~/soal3d.sh
+0 18 * * 1-5 cd /home/daffainfo/soal-shift-sisop-modul-1-A09-2021 && unzip -P date +\%m\%d\%Y Koleksi.zip && rm Koleksi.zip
