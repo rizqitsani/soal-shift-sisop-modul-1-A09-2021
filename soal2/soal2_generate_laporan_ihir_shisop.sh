@@ -27,6 +27,7 @@ END{
     for (i in CstName){
         print i
     }
+	print "\n"
 }' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
 
 #2c
