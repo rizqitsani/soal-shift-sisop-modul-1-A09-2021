@@ -10,6 +10,7 @@ BEGIN{FS="\t"}{
         RowID=$1
     }
 }
+
 END{
     print "Transaksi terakhir dengan profit percentage terbesar yaitu", RowID, "dengan persentase", ProfitMax, "%\n"}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
 
@@ -31,34 +32,42 @@ END{
 #2c
 awk '
 BEGIN{FS="\t"}{
-    if (1!=NR){
-        Segment[$8]+=1
+    if ($8=="Home Office") {
+         seg1+=1
+    }
+    else if ($8=="Consumer") {
+         seg2+=1
+    }
+    else if ($8=="Corporate") {
+         seg3+=1
     }
 }
 END{
-    SalesMinimum=4000
-    for (bidang in Segment){
-        if (SalesMinimum > Segment[bidang]){
-            SalesMinimum = Segment[bidang]
-            SalesMinimum = bidang
-        }
+    if(seg1<seg2 && seg1<seg3){
+        print "Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan", seg1, "transaksi\n"
     }
-print "\nTipe segmen customer yang penjualannya paling sedikit adalah", bidang, "dengan", Segment[bidang], "transaksi\n"}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
+    else if(seg2<seg1 && seg2<seg3){
+        print "Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan", seg2, "transaksi\n"
+    }
+    else if(seg3<seg1 && seg3<seg2){
+        print "Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan", seg3, "transaksi\n"
+    }
+}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
 
 #2d
 export LC_ALL=C
 awk '
 BEGIN{FS="\t"}{
-    if (1!=NR){
-        region[$13]=$21 + region[$13]
+    if ($13=="Central" || $13=="South" || $13=="East" || $13=="West"){
+        reg[$13]+=$21
     }
 }
 END{
-    ProfitMinimum=4000
-    for (daerah in region){
-        if (ProfitMinimum > region[daerah]){
-            ProfitMinimum = region[daerah]
-            ProfitMinimum = daerah
+    profit=99999
+    for(i in reg){
+        if(profit>reg[i]){
+            profit=reg[i]
+            region=i
         }
     }
-print "Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah", daerah, "dengan total keuntungan", region[daerah]}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
+print "Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah", region, "dengan total keuntungan", profit)}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
