@@ -97,15 +97,101 @@ Tiap tahunnya, TokoShiSop mengadakan Rapat Kerja yang membahas bagaimana hasil p
 
 ### 2.A
 **Pembahasan:**
+```bash
+awk '
+BEGIN{FS="\t"}{
+    ProfitPercentage=(($21/($18-$21))*100)
+    if (ProfitPercentage>=ProfitMax){
+        ProfitMax=ProfitPercentage
+        RowID=$1
+    }
+}
+```
+diawali dengan mengimport awk untuk memproses file data yang diberikan yaitu `Laporan-TokoShiShop.tsv` lalu dimulai dengan field separator `FS="/t"` karena pada data file tersebut terpisahkan oleh tab. Didalam block BEGIN: pertama mencari nilai variabel `ProfitPecentage` dengan cara nilai kolom profit($21) dibagi pengurangan dari nilai kolom sales($18) dan nilai kolom profit($21) kemudian dikali 100, kemudian nilai `ProfitPercentage` akan dibandingkan dengan `ProfitMax` jika nilai `ProfitPercentage` lebih besar maka nilai `ProfitMax` akan diganti oleh nilai `ProfitPercentage` lalu variabel `RowID` akan menyimpan Row ID yang paling besar.
+
+```bash
+END{
+    print "Transaksi terakhir dengan profit percentage terbesar yaitu", RowID, "dengan persentase", ProfitMax, "%\n"}' 
+    /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
+```
+kemudian diakhiri dengan block END yang dimana akan mengoutput sesuai perintah soal dengan menampilkan nilai variabel `RowID` dan `ProfitMax`, dan hasil outputnya dimasukkan sesuai direktori dari file data `Laporan-TokoShiSop.tsv` kedalam file `hasil.txt`.
 
 ### 2.B
 **Pembahasan:**
+```bash
+awk '
+BEGIN{FS="\t"}{
+    if ($2~"2017" && ($10=="Albuquerque")){
+        CstName[$7]++
+    }
+}
+```
+diawali dengan mengimport awk untuk memproses file data yang diberikan yaitu `Laporan-TokoShiShop.tsv` lalu dimulai dengan field separator `FS="/t"` karena pada data file tersebut terpisahkan oleh tab. Didalam block BEGIN: dibuat penkondisian jika pada kolom OrderID($2) terdapat substring "2017" dan pada kolom City($10) terdapat string "Albuquerque" maka dilist nama Costumer($7) pada variabel array `CstName[$7]` yang sesuai dengan kondisinya.
 
+```bash
+END{
+    print "Daftar nama customer di Albuquerque pada tahun 2017 antara lain:"
+    for (i in CstName){
+        print i
+    }
+	print "\n"
+}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
+```
+kemudian diakhiri dengan block END yang dimana akan mengoutput sesuai perintah soal dengan menampilkan nilai variabel `i` sesuai array `CstName` yang telah dilist dengan menggunakan looping selama array `CstName` , dan hasil outputnya dimasukkan sesuai direktori dari file data `Laporan-TokoShiSop.tsv` kedalam file `hasil.txt`.
 ### 2.C
 **Pembahasan:**
+```bash
+BEGIN{FS="\t"}{
+    if ($8=="Home Office") {
+         seg1+=1
+    }
+    else if ($8=="Consumer") {
+         seg2+=1
+    }
+    else if ($8=="Corporate") {
+         seg3+=1
+    }
+}
+```
+diawali dengan mengimport awk untuk memproses file data yang diberikan yaitu `Laporan-TokoShiShop.tsv` lalu dimulai dengan field separator `FS="/t"` karena pada data file tersebut terpisahkan oleh tab. Didalam block BEGIN: dibuat tiga penkondisian pertama jika pada kolom Segment($8) terdapat terdapat string "Home Office" maka variabel nilai `seg1` akan bertambah, kondisi yang kedua jika pada kolom Segment($8) terdapat terdapat string "Consumer" maka variabel nilai `seg2` akan bertambah, kondisi yang ketiga jika pada kolom Segment($8) terdapat terdapat string "Corporate" maka variabel nilai `seg3` akan bertambah. 
+```bash
+END{
+    if(seg1<seg2 && seg1<seg3){
+        print "Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan", seg1, "transaksi\n"
+    }
+    else if(seg2<seg1 && seg2<seg3){
+        print "Tipe segmen customer yang penjualannya paling sedikit adalah Consumer dengan", seg2, "transaksi\n"
+    }
+    else if(seg3<seg1 && seg3<seg2){
+        print "Tipe segmen customer yang penjualannya paling sedikit adalah Corporate dengan", seg3, "transaksi\n"
+    }
+}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
+```
+kemudian diakhiri dengan block END yang dimana akan mengoutput sesuai perintah soal dengan kondisi pertama jika nilai `seg1` lebih kecil dari nilai `seg2` dan `seg3` maka akan menampilkan Home Officer dan nilai `seg1`, kondisi kedua jika nilai `seg2` lebih kecil dari nilai `seg1` dan `seg3` maka akan menampilkan Consumer dan nilai `seg2`, dan kondisi ketiga jika nilai `seg3` lebih kecil dari nilai `seg1` dan `seg2` maka akan menampilkan Corporate dan nilai `seg3`. Kemudian hasil outputnya dimasukkan sesuai direktori dari file data `Laporan-TokoShiSop.tsv` kedalam file `hasil.txt`.
 
 ### 2.D
 **Pembahasan:**
+```bash
+BEGIN{FS="\t"}{
+    if ($13=="Central" || $13=="South" || $13=="East" || $13=="West"){
+        reg[$13]+=$21
+    }
+}
+```
+diawali dengan mengimport awk untuk memproses file data yang diberikan yaitu `Laporan-TokoShiShop.tsv` lalu dimulai dengan field separator `FS="/t"` karena pada data file tersebut terpisahkan oleh tab. Didalam block BEGIN: dibuat penkondisian jika pada kolom Region($13) terdapat string "Central","South","East","West" maka pada kolom Profit($21) profit akan dijumlah kan dalam array `reg[$13]` sesuai dengan region($13).
+
+```bash
+END{
+    profit=99999
+    for(i in reg){
+        if(profit>reg[i]){
+            profit=reg[i]
+            region=i
+        }
+    }
+print "Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah", region, "dengan total keuntungan", profit}' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
+```
+kemudian diakhiri dengan block END yang dimana akan mengoutput sesuai perintah soal dengan membuat variabel `profit` dengan nilai 99999 agar menentukan nilai lebih kecil kemudian menggunakan looping untuk mencari nilai paling sedikit selama `i` sampai `reg` jika `profit` lebih lebih besar dari `reg[i]` maka nilai `profit` akan menjadi nilai `reg[i]` lalu variabel `region` akan menjadi `i` dan akan menampilkan output sesuai diperintahkan dengan nilai variabel 	`region` dan `profit`, hasil outputnya dimasukkan sesuai direktori dari file data `Laporan-TokoShiSop.tsv` kedalam file `hasil.txt`.
 
 ### Problem yang dialami:
 
