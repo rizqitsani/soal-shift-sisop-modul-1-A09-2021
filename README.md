@@ -122,9 +122,9 @@ Kuuhaku adalah orang yang sangat suka mengoleksi foto-foto digital, namun Kuuhak
 ### 3.B
 **Pembahasan:**
 ```
-0 20 1-31/7,2-31/4 * * bash ~/soal3b.sh
+0 20 1-31/7,2-31/4 * * cd /home/daffainfo/soal-shift-sisop-modul-1-A09-2021 && bash soal3b.sh
 ```
-Crontab yang memungkinkan untuk menjalankan file `soal3b.sh` saat jam 8 malam dari tanggal 1 (7 hari sekali) dan dari tanggal 2 (4 hari sekali)
+Crontab yang memungkinkan untuk menjalankan file `soal3b.sh` yang berada pada folder `soal-shift-sisop-modul-1-A09-2021` saat jam 8 malam dari tanggal 1 (7 hari sekali) dan dari tanggal 2 (4 hari sekali)
 
 ### 3.C
 **Pembahasan:**
@@ -135,12 +135,12 @@ Crontab yang memungkinkan untuk menjalankan file `soal3b.sh` saat jam 8 malam da
 ### 3.E
 **Pembahasan:**
 ```
-0 7 * * 1-5 bash ~/soal3d.sh
-0 18 * * 1-5 unzip Koleksi.zip && rm Koleksi.zip
+0 7 * * 1-5 cd /home/daffainfo/soal-shift-sisop-modul-1-A09-2021 && bash soal3d.sh
+0 18 * * 1-5 cd /home/daffainfo/soal-shift-sisop-modul-1-A09-2021 && unzip -P `date +\%m\%d\%Y` Koleksi.zip && rm Koleksi.zip
 ```
 Terdapat 2 crontab
-* Yang pertama yaitu menjalankan file bash setiap jam 7 pagi, didalam file bash tersebut terdapat perintah untuk menzip file
-* Yang kedua yaitu untuk menunzip file bernama `Koleksi.zip` dan setelah di unzip kemudian dihapus dengan perintah `rm`
+* Yang pertama yaitu menjalankan file bash bernama `soal3d.sh` yang berada didalam folder `soal-shift-sisop-modul-1-A09-2021` setiap jam 7 pagi, didalam file bash tersebut terdapat perintah untuk menzip file
+* Yang kedua yaitu untuk menunzip file bernama `Koleksi.zip` namun memiliki password dengan format tanggal, dan setelah di unzip kemudian dihapus dengan perintah `rm`
 
 ### Problem yang dialami:
 * Saat membuat crontab, belum terbiasa dengan membuat crontab khususnya untuk nomor 3B. Saat pertama membuat crontab nomor 3B saya menggunakan `0 20 1/7,2/4 * *` awalnya namun terdapat warning yang saya cek di website [Crontab.guru](https://crontab.guru/#0_20_1/7,2/4_*_*) dan setelah searching cukup lama dan ternyata lebih baik jika diberi interval harinya dari yang awalnya `1/7,2/4` menjadi `1-31/7,2-31/4`
