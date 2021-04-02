@@ -48,10 +48,10 @@ END{
         print "Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan", seg1, "transaksi\n"
     }
     else if(seg2<seg1 && seg2<seg3){
-        print "Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan", seg2, "transaksi\n"
+        print "Tipe segmen customer yang penjualannya paling sedikit adalah Consumer dengan", seg2, "transaksi\n"
     }
     else if(seg3<seg1 && seg3<seg2){
-        print "Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan", seg3, "transaksi\n"
+        print "Tipe segmen customer yang penjualannya paling sedikit adalah Corporate dengan", seg3, "transaksi\n"
     }
 }' /home/rizqi/Documents/shift1/Laporan-TokoShiSop.tsv >> hasil.txt
 
