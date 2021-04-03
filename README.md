@@ -203,24 +203,162 @@ Source code : [Click here!](https://github.com/rizqitsani/soal-shift-sisop-modul
 Kuuhaku adalah orang yang sangat suka mengoleksi foto-foto digital, namun Kuuhaku juga merupakan seorang yang pemalas sehingga ia tidak ingin repot-repot mencari foto, selain itu ia juga seorang pemalu, sehingga ia tidak ingin ada orang yang melihat koleksinya tersebut, sayangnya ia memiliki teman bernama Steven yang memiliki rasa kepo yang luar biasa. Kuuhaku pun memiliki ide agar Steven tidak bisa melihat koleksinya, serta untuk mempermudah hidupnya, yaitu dengan meminta bantuan kalian. Idenya adalah :
 
 ### 3.A
+Pada soal ini diperintahkan untuk mendownload 23 gambar, menghilangkan duplikat, dan dinamai ulang
+
 **Pembahasan:**
+```bash
+for ((i=1; i<=23; i=i+1))
+do
+  wget -a Foto.log -nv https://loremflickr.com/320/240/kitten
+done
+```
+
+Pertama, dilakukan perintah download menggunakan command `wget` dengan option `-a Foto.log` untuk append log output ke file Foto.log dan option `-nv` agar outputnya tidak verbose.
+
+```bash
+find . -type f -exec md5sum {} \; | sort | awk '
+  BEGIN{last_hash = ""}
+  {
+    if($1 == last_hash) {
+      print $2
+    }
+    last_hash = $1
+  }
+' | xargs rm
+```
+
+Setelahnya, file yang telah di download dicari duplikatnya dengan melihat hash dari file tersebut. Detailnya sebagai berikut:
+* `find . -type f -exec md5sum {} \;` digunakan untuk mencari semua file di folder dan mengeksekusi perintah `md5sum` untuk melihat hashnya
+* Hash yang didapat tadi diurutkan dengan command `sort`
+* Setelah diurutkan, didapatkan data dengan kolom pertama berisi hash dan kolom kedua berisi nama file. Data tersebut di filter dengan command `awk`. Apabila ditemukan hash yang sama dengan file sebelumnya, nama filenya diprint
+* Nama-nama file duplikat yang diprint tadi, digunakan sebagai argumen command `xargs` yang akan menjalankan command `rm` untuk menghapus file
+
+```bash
+order=1
+for pathname in $( find . -type f -name "kitten*" );
+do
+  if [ $order -lt 10 ]
+  then
+    mv $pathname "Koleksi_0$order"
+  else
+    mv $pathname "Koleksi_$order"
+  fi
+  let order=$order+1
+done
+```
+
+Terakhir semua file yang telah di download di rename menjadi Koleksi_01, Koleksi_02, dst. Detailnya sebagai berikut:
+* Diinisialisasi variabel order yang akan digunakan untuk membantu penamaan
+* Loop semua file menggunakan command `find . -type f -name "kitten*"` yang akan mencari semua file dengan nama kitten...
+* Dilakukan penamaan ulang dengan command `mv`. Jika kurang dari 10 ditambahkan digit "0" di depan
 
 ### 3.B
+Pada soal ini diperintahkan untuk memindahkan file yang telah didownload ke folder dengan format DD-MM-YYYY
+
 **Pembahasan:**
+```bash
+bash soal3a.sh
+
+dir_name=$(date "+%d-%m-%Y")
+mkdir $dir_name
+
+mv Koleksi_* $dir_name
+mv Foto.log $dir_name
 ```
+
+Pertama kita menjalankan script yang telah dibuat untuk problem 3A. Setelah itu dibuat variabel `dir_name` berisi tanggal hari ini dengan format DD-MM-YYYY dengan command `date`
+
+Setelah itu, Foto.log dan file dengan awalan "Koleksi_" dipindah ke directory yang namanya adalah isi dari variabel `dir_name` tadi
+
+```bash
 0 20 1-31/7,2-31/4 * * cd /home/daffainfo/soal-shift-sisop-modul-1-A09-2021 && bash soal3b.sh
 ```
+
 Crontab yang memungkinkan untuk menjalankan file `soal3b.sh` yang berada pada folder `soal-shift-sisop-modul-1-A09-2021` saat jam 8 malam dari tanggal 1 (7 hari sekali) dan dari tanggal 2 (4 hari sekali)
 
 ### 3.C
+Pada soal ini diperintahkan untuk mengunduh gambar kucing dan kelinci secara bergantian tiap harinya dan ditaruh di folder sesuai format yang telah ditentukan
+
 **Pembahasan:**
+```bash
+yesterday=$(date --date="yesterday" "+%d-%m-%Y")
+today=$(date "+%d-%m-%Y")
+item="bunny"
+new_folder_name="Kelinci_$today"
+```
+
+Pertama, dilakukan inisialisasi variabel untuk membantu pengerjaan berikutnya. Detailnya sebagai berikut:
+* `yesterday`, berisi tanggal kemarin dengan format DD-MM-YYYY
+* `today`, berisi tanggal hari ini dengan format DD-MM-YYYY
+* `item`, berisi item yang akan didownload. Secara default isinya "bunny"
+* `new_folder_name`, berisi format nama folder yang akan digunakan untuk menyimpan gambar yang telah diunduh. Secara default isinya "Kelinci_" diikuti tanggal hari ini yang telah ada di variabel `today`
+
+```bash
+if [ -d "Kucing_$yesterday" ]
+then
+  item="bunny"
+  new_folder_name="Kelinci_$today"
+else
+  item="kitten"
+  new_folder_name="Kucing_$today"
+fi
+```
+
+Selanjutnya, ditentukan gambar apa yang akan didownload sekarang. Dicari dulu apakah ada folder dengan nama "Kucing_" dengan tanggal kemarin menggunakan command `-d`. Berikutnya variabel `item` dan `new_folder_name` disesuaikan isinya
+
+```bash
+for ((i=1; i<=23; i=i+1))
+do
+  wget -a Foto.log -nv "https://loremflickr.com/320/240/$item"
+done
+
+find . -type f -exec md5sum {} \; | sort | awk '
+  BEGIN{last_hash = ""}
+  {
+    if($1 == last_hash) {
+      print $2
+    }
+    last_hash = $1
+  }
+' | xargs rm
+
+order=1
+for pathname in $( find . -type f -name "$item*" );
+do
+  if [ $order -lt 10 ]
+  then
+    mv $pathname "Koleksi_0$order"
+  else
+    mv $pathname "Koleksi_$order"
+  fi
+  let order=$order+1
+done
+
+mkdir $new_folder_name
+
+mv Koleksi_* $new_folder_name
+mv Foto.log $new_folder_name
+```
+
+Terakhir, dilakukan perintah seperti yang ada di solusi problem 3A. Bedanya adalah, semua operasi disesuaikan dengan variabel `item` dan `new_folder_name`
 
 ### 3.D
+Pada soal ini semua folder koleksi yang telah dibuat dizip menjadi satu dengan nama Koleksi.zip dengan password tanggal hari ini
+
 **Pembahasan:**
+```bash
+zip -q -r -m -P $(date "+%m%d%Y") Koleksi.zip Kucing_* Kelinci_*
+```
+
+Untuk zip semua folder, digunakan command `zip` dengan beberapa option seperti:
+* `-q`, menghilangkan prompt
+* `-r`, agar zip dilakukan untuk folder beserta semua file didalamnya
+* `-m`, menghapus file asli setelah dizip
+* `-P`, memberi password. Disini passwordnya merupakan hasil dari command `date` dengan format MMDDYYY
 
 ### 3.E
 **Pembahasan:**
-```
+```bash
 0 7 * * 1-5 cd /home/daffainfo/soal-shift-sisop-modul-1-A09-2021 && bash soal3d.sh
 0 18 * * 1-5 cd /home/daffainfo/soal-shift-sisop-modul-1-A09-2021 && unzip -P `date +\%m\%d\%Y` Koleksi.zip && rm Koleksi.zip
 ```
